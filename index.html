@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COWI Performance Audit</title>
+<style>
+  body {
+    background-color: black;
+    color: white;
+    font-family: "Courier New", monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hidden { display: none; }
+  .message { margin: 20px 0; font-size: 1.5rem; }
+  .fade-in { animation: fadeIn 1.5s ease forwards; opacity:0; }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  .blink { animation: blink 0.8s step-start infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  #scan { color: white; }
+  #final { color: #ff4500; font-weight: bold; }
+
+  #dots { color: white; }
+</style>
+</head>
+<body>
+
+<div id="scan" class="message hidden">Confirming identity<span id="dots">...</span></div>
+<div id="final" class="message hidden"></div>
+
+<script>
+  const dots = document.getElementById("dots");
+  let count = 0;
+  const loading = setInterval(() => {
+    count = (count + 1) % 4;
+    dots.textContent = '.'.repeat(count);
+  }, 400);
+
+  // Humorous COWI Performance Audit results
+  const auditResults = [
+    "Your coffee consumption exceeds safe limits.",
+    "Your Excel macros are dangerously complex.",
+    "Too much browsing, not enough coding.",
+    "You spent 3 hours on memes today.",
+    "Your jokes received zero stars.",
+    "Expendable… but your puns are appreciated.",
+    "Halloween candy consumption untracked.",
+    "Your desk plant will be promoted instead.",
+    "Meetings attendance is exemplary… for a ghost.",
+    "Your TPS reports are suspiciously perfect.",
+    "You showed 0 initiative in the last sprint.",
+    "Your workspace is dangerously messy.",
+    "You spent 15 minutes staring at the printer.",
+    "Your keyboard typing speed is subpar.",
+    "You are not following ergonomic protocols.",
+    "Your motivational quotes are inspiring… to no one.",
+    "You failed the ‘stare at the ceiling’ test.",
+    "You are dangerously close to over-caffeination.",
+    "Your mouse clicks are not optimal.",
+    "Your work is barely legit."
+  ];
+
+  // select a random audit result
+  const selectedResult = auditResults[Math.floor(Math.random() * auditResults.length)];
+
+  // display sequence
+  setTimeout(() => document.getElementById("scan").classList.remove("hidden"), 1000);
+  setTimeout(() => {
+    document.getElementById("scan").classList.add("hidden");
+    document.getElementById("final").textContent = `Match found.\n ${selectedResult}`;
+    document.getElementById("final").classList.remove("hidden");
+    clearInterval(loading);
+  }, 3000);
+</script>
+
+</body>
+</html>
