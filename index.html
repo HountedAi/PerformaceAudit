@@ -20,32 +20,34 @@
 
   .hidden { display: none; }
   .message { margin: 20px 0; font-size: 1.5rem; }
-  .fade-in { animation: fadeIn 1.5s ease forwards; opacity:0; }
+  
+  .fade-in { animation: fadeIn 1.5s ease forwards; }
   @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-  .blink { animation: blink 0.8s step-start infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-
   #scan { color: white; }
-  #final { color: #ff4500; font-weight: bold; }
+  #alert { color: #ff4444; font-weight: bold; }
+  #final { font-weight: bold; text-align: left; }
 
   #dots { color: white; }
 </style>
 </head>
 <body>
 
-<div id="scan" class="message hidden">Confirming identity<span id="dots">...</span></div>
-<div id="final" class="message hidden"></div>
+<div id="scan" class="message hidden">Scanning COWI performance of current user<span id="dots">...</span></div>
+<div id="alert" class="message hidden fade-in"></div>
+<div id="final" class="message hidden fade-in"></div>
 
 <script>
+  const scanEl = document.getElementById("scan");
   const dots = document.getElementById("dots");
+
   let count = 0;
   const loading = setInterval(() => {
     count = (count + 1) % 4;
     dots.textContent = '.'.repeat(count);
   }, 400);
 
-  // Humorous COWI Performance Audit results
+  // Humorous audit results
   const auditResults = [
     "Your coffee consumption exceeds safe limits.",
     "Your Excel macros are dangerously complex.",
@@ -69,17 +71,37 @@
     "Your work is barely legit."
   ];
 
-  // select a random audit result
-  const selectedResult = auditResults[Math.floor(Math.random() * auditResults.length)];
+  // AI-style alert messages
+  const alertMessages = [
+    "COWI AI audit complete. Issues detected:",
+    "COWI AI detected efficiency issues:",
+    "COWI AI analysis done for current user. Findings:",
+    "COWI AI flags performance gaps:",
+    "COWI AI assessment finished. Issues detected:"
+  ];
 
-  // display sequence
-  setTimeout(() => document.getElementById("scan").classList.remove("hidden"), 1000);
+  const selectedResult = auditResults[Math.floor(Math.random() * auditResults.length)];
+  const selectedAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+
+  // Show scanning
+  setTimeout(() => scanEl.classList.remove("hidden"), 1000);
+
+  // After scanning, hide scan and show AI alert
   setTimeout(() => {
-    document.getElementById("scan").classList.add("hidden");
-    document.getElementById("final").textContent = `Match found.\n ${selectedResult}`;
-    document.getElementById("final").classList.remove("hidden");
+    scanEl.classList.add("hidden");
     clearInterval(loading);
-  }, 3000);
+
+    const alertEl = document.getElementById("alert");
+    alertEl.textContent = selectedAlert;
+    alertEl.classList.remove("hidden");
+  }, 4000);
+
+  // Show final humorous audit result below alert
+  setTimeout(() => {
+    const finalEl = document.getElementById("final");
+    finalEl.textContent = selectedResult;
+    finalEl.classList.remove("hidden");
+  }, 5500);
 </script>
 
 </body>
