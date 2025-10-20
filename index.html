@@ -1,108 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COWI Performance Audit</title>
-<style>
-  body {
-    background-color: black;
-    color: white;
-    font-family: "Courier New", monospace;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    overflow: hidden;
-  }
-
-  .hidden { display: none; }
-  .message { margin: 20px 0; font-size: 1.5rem; }
-  
-  .fade-in { animation: fadeIn 1.5s ease forwards; }
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-  #scan { color: white; }
-  #alert { color: #ff4444; font-weight: bold; }
-  #final { font-weight: bold; text-align: left; }
-
-  #dots { color: white; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COWI AI Halloween Audit</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 <body>
+  <!-- Background Matrix -->
+  <div class="matrix">
+    <!-- duplicated spans to create code rain -->
+    <span style="--i:0">010110101011</span>
+    <span style="--i:1">110010011010</span>
+    <span style="--i:2">101011001101</span>
+    <span style="--i:3">011010110011</span>
+    <span style="--i:4">110110101011</span>
+    <span style="--i:5">011010010101</span>
+    <span style="--i:6">010101101010</span>
+    <span style="--i:7">111001011001</span>
+    <span style="--i:8">101010111001</span>
+    <span style="--i:9">010101101010</span>
+  </div>
 
-<div id="scan" class="message hidden">Scanning COWI performance of current user<span id="dots">...</span></div>
-<div id="alert" class="message hidden fade-in"></div>
-<div id="final" class="message hidden fade-in"></div>
+  <!-- Scanner area -->
+  <div id="scanner"></div>
 
-<script>
-  const scanEl = document.getElementById("scan");
-  const dots = document.getElementById("dots");
+  <!-- Overlay text -->
+  <div class="hud">
+    <div id="scanText">🔍 Initiating COWI AI Human Audit...</div>
+    <div id="log"></div>
+  </div>
 
-  let count = 0;
-  const loading = setInterval(() => {
-    count = (count + 1) % 4;
-    dots.textContent = '.'.repeat(count);
-  }, 400);
-
-  // Humorous audit results
-  const auditResults = [
-    "Your coffee consumption exceeds safe limits.",
-    "Your Excel macros are dangerously complex.",
-    "Too much browsing, not enough coding.",
-    "You spent 3 hours on memes today.",
-    "Your jokes received zero stars.",
-    "Expendable… but your puns are appreciated.",
-    "Halloween candy consumption overload.",
-    "No progress detected. Your desk plant will be promoted instead of you.",
-    "Meetings attendance is exemplary… for a ghost.",
-    "Your Cockpit hour registration is suspiciously perfect.",
-    "You showed 0 initiative in the last sprint.",
-    "Your workspace is dangerously messy.",
-    "You spent 15 minutes staring at the printer.",
-    "Your keyboard typing speed is too slow even for grandma.",
-    "You are not following ergonomic protocols.",
-    "Your motivational quotes are inspiring… to no one.",
-    "You failed the ‘stare at the ceiling’ test.",
-    "You are dangerously close to over-caffeination.",
-    "Your mouse clicks are not optimal.",
-    "Your work is barely legit."
-  ];
-
-  // AI-style alert messages
-  const alertMessages = [
-    "COWI AI audit complete. Status:",
-    "COWI AI detected efficiency Status:",
-    "COWI AI analysis done for current user. Findings:",
-    "COWI AI flags performance gaps:",
-    "COWI AI assessment finished. Status:"
-  ];
-
-  const selectedResult = auditResults[Math.floor(Math.random() * auditResults.length)];
-  const selectedAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-
-  // Show scanning
-  setTimeout(() => scanEl.classList.remove("hidden"), 1000);
-
-  // After scanning, hide scan and show AI alert
-  setTimeout(() => {
-    scanEl.classList.add("hidden");
-    clearInterval(loading);
-
-    const alertEl = document.getElementById("alert");
-    alertEl.textContent = selectedAlert;
-    alertEl.classList.remove("hidden");
-  }, 4000);
-
-  // Show final humorous audit result below alert
-  setTimeout(() => {
-    const finalEl = document.getElementById("final");
-    finalEl.textContent = selectedResult;
-    finalEl.classList.remove("hidden");
-  }, 5500);
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
