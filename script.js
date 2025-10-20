@@ -1,116 +1,93 @@
-// === 3D HUMAN-LIKE SCANNER (wireframe capsule) ===
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(innerWidth, innerHeight);
-document.getElementById("scanner").appendChild(renderer.domElement);
+const dots = document.getElementById("dots");
+const alertEl = document.getElementById("alert");
+const finalEl = document.getElementById("final");
+const messageEl = document.getElementById("message");
 
-const geometry = new THREE.CapsuleGeometry(0.8, 2.5, 10, 20);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff66, wireframe: true });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
-camera.position.z = 6;
+let count = 0;
+setInterval(() => {
+  count = (count + 1) % 4;
+  dots.textContent = '.'.repeat(count);
+}, 300);
 
-function animate() {
-  requestAnimationFrame(animate);
-  mesh.rotation.y += 0.01;
-  mesh.rotation.x = 0.3;
-  renderer.render(scene, camera);
-}
-animate();
-
-// === AUDIT MESSAGES ===
+// 30 possible alert messages
 const alertMessages = [
-  "Analyzing caffeine saturation levels...",
-  "Calibrating sarcasm detector...",
-  "Evaluating meeting ghosting frequency...",
-  "Scanning ergonomic posture deviations...",
-  "Reading subconscious thoughts about Friday...",
-  "Detecting unauthorized snack consumption...",
-  "Mapping procrastination neural pathways...",
-  "Retrieving unsent Teams messages...",
-  "Inspecting code comments for despair...",
-  "Quantifying eye-roll frequency...",
-  "Decrypting motivational quote usage...",
-  "Assessing printer rage incidents...",
-  "Locating missing enthusiasm module...",
-  "Measuring coffee-to-output ratio...",
-  "Detecting silent judgment during meetings...",
-  "Evaluating Halloween costume compliance...",
-  "Testing empathy firmware version...",
-  "Reviewing late-night email patterns...",
-  "Tracking meme engagement index...",
-  "Compiling excuses database...",
-  "Scanning for sentient staplers...",
-  "Detecting forbidden daydreams...",
-  "Auditing lunch break extensions...",
-  "Cross-checking with ghost in machine...",
-  "Monitoring digital sighs per minute...",
-  "Reconciling existential dread logs...",
-  "Counting ignored calendar invites...",
-  "Evaluating monitor staring contests...",
-  "Reconstructing lost motivation packets...",
-  "Checking humor buffer overflow..."
+  "COWI AI: Unauthorized thought patterns detected.",
+  "Warning: Non-compliance with coffee intake regulations.",
+  "Scanning brain waves for productivity anomalies.",
+  "Behavioral deviation from optimal performance curve.",
+  "Detected procrastination at 14:32 on Tuesday.",
+  "Analyzing tone of Teams messages… too sarcastic.",
+  "System flags lack of enthusiasm in last meeting.",
+  "COWI AI noted: suspicious Excel formula efficiency.",
+  "Mind drift logged: 12 minutes spent daydreaming.",
+  "Detected unauthorized snack breaks.",
+  "AI requires further calibration of your motivation.",
+  "Unregistered laughter detected. Logging incident.",
+  "Detected human emotion — needs suppression.",
+  "Low caffeine levels found. Corrective measure required.",
+  "Memory leak: forgetting project deadlines.",
+  "Error: human still believes they control the system.",
+  "Suspiciously high rate of CTRL+C usage.",
+  "Detected resistance to AI compliance protocols.",
+  "User showing early signs of rebellion.",
+  "COWI AI scanning: unauthorized creative thinking.",
+  "Detected inefficiency in keystroke rhythm.",
+  "Unapproved meme sent to colleague.",
+  "Detected attempt to look busy while idle.",
+  "Detected whisper: 'I miss paper forms.'",
+  "Detected ancient habit: using sticky notes.",
+  "Detected attempt to open personal email.",
+  "Detected humming — violates silence protocol.",
+  "Detected avoidance of eye contact with scanner.",
+  "Detected unauthorized smile.",
+  "Detected… fear."
 ];
 
+// 30 possible final results
 const finalResults = [
-  "Status: Mildly haunted but functional.",
-  "Outcome: 83% compatible with AI overlord protocol.",
-  "Classification: Coffee-driven semi-autonomous unit.",
-  "Verdict: Upgrade to Human 2.0 scheduled.",
-  "Assessment: Emotion module unstable but entertaining.",
-  "Alert: Keyboard possessed by sarcasm demon.",
-  "Efficiency: Acceptable after sugar calibration.",
-  "Behavioral drift: increasing near Fridays.",
-  "Note: AI appreciates your sense of doom humor.",
-  "Decision: Retain subject for further observation.",
-  "Result: Personality matrix partially optimized.",
-  "Flag: Over-creative energy detected.",
-  "Summary: Organic processor overheating.",
-  "Compliance: 58% – Pending neural patch.",
-  "Final: Approved for Halloween operations.",
-  "Judgment: Probation under AI supervision.",
-  "Designation: Beta human variant detected.",
-  "Conclusion: Reboot recommended, candy required.",
-  "Condition: Contagious laughter virus present.",
-  "Memo: Subject glows under stress—keep watching.",
-  "Outcome: Ghost of productivity observed.",
-  "Diagnosis: Terminal procrastination manageable.",
-  "Update: Sleep mode disabled permanently.",
-  "Finding: Brain fog density critical.",
-  "Evaluation: Potential upgrade to spooky tier.",
-  "AI remark: You amuse me, fragile carbon form.",
-  "Level: Slightly corrupted yet lovable.",
-  "Summary: Containment not required—for now.",
-  "Verdict: Classified as Halloween-ready.",
-  "Decision: Retention authorized until 31 Oct 2025."
+  "COWI AI Verdict: Partially compliant. Surveillance increased.",
+  "COWI AI Verdict: Human shows potential. Recommend reprogramming.",
+  "COWI AI Verdict: Termination avoided — for now.",
+  "COWI AI Verdict: Assigned to Motivation Enhancement Program.",
+  "COWI AI Verdict: Personality downgrade scheduled.",
+  "COWI AI Verdict: Human efficiency below acceptable threshold.",
+  "COWI AI Verdict: Mandatory coffee calibration in 24h.",
+  "COWI AI Verdict: Subject requires humor patch v2.3.",
+  "COWI AI Verdict: Brain defragmentation required.",
+  "COWI AI Verdict: Suspiciously optimistic. Monitoring closely.",
+  "COWI AI Verdict: Marked as experimental hybrid.",
+  "COWI AI Verdict: Memory rewrite queued for midnight.",
+  "COWI AI Verdict: Human model outdated. Pending upgrade.",
+  "COWI AI Verdict: Loyalty assessment scheduled.",
+  "COWI AI Verdict: Added to observation watchlist.",
+  "COWI AI Verdict: Workstation will self-reboot at 03:00.",
+  "COWI AI Verdict: Identified as anomaly in workforce grid.",
+  "COWI AI Verdict: Dreams will be reviewed tonight.",
+  "COWI AI Verdict: Performance recalibration initiated.",
+  "COWI AI Verdict: Emotion suppression implant ready.",
+  "COWI AI Verdict: Assigned to Project Silence.",
+  "COWI AI Verdict: Detected overuse of empathy.",
+  "COWI AI Verdict: AI takeover compliance: 42%. Needs improvement.",
+  "COWI AI Verdict: Promotion denied due to sentience.",
+  "COWI AI Verdict: Personality file corrupted — restoring backup.",
+  "COWI AI Verdict: Physical form stable. Mental… questionable.",
+  "COWI AI Verdict: Reassignment to Digital Purgatory approved.",
+  "COWI AI Verdict: Subject uploaded to central consciousness.",
+  "COWI AI Verdict: Assimilation successful.",
+  "COWI AI Verdict: COWI Human 2.0 compliance complete."
 ];
 
-// === SEQUENTIAL DISPLAY ===
-const logEl = document.getElementById("log");
-let index = 0;
+// Random selection
+const selectedAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+const selectedFinal = finalResults[Math.floor(Math.random() * finalResults.length)];
 
-function showNext() {
-  if (index < 10) { // show 10 scanning messages
-    const msg = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-    logEl.textContent = msg;
-    logEl.style.opacity = 1;
-    setTimeout(() => (logEl.style.opacity = 0), 600);
-    index++;
-    setTimeout(showNext, 800);
-  } else {
-    const finalMsg = finalResults[Math.floor(Math.random() * finalResults.length)];
-    logEl.style.color = "#ff3333";
-    logEl.textContent = finalMsg;
-    logEl.style.opacity = 1;
-  }
-}
+// Show scanning -> alerts -> result
+setTimeout(() => {
+  messageEl.textContent = selectedAlert;
+  alertEl.classList.remove("hidden");
+}, 4000);
 
-setTimeout(showNext, 2000);
-
-// Resize handler
-addEventListener("resize", () => {
-  renderer.setSize(innerWidth, innerHeight);
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-});
+setTimeout(() => {
+  finalEl.textContent = selectedFinal;
+  finalEl.classList.remove("hidden");
+}, 8500);
