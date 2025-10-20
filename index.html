@@ -19,7 +19,6 @@
     height: 100vh;
   }
 
-  /* Matrix flicker background */
   .overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -48,7 +47,6 @@
     z-index: 1;
   }
 
-  /* Human outline */
   #human {
     position: absolute;
     top: 0;
@@ -94,7 +92,6 @@
     background: rgba(0,255,0,0.2);
   }
 
-  /* Scanning line */
   #scan-line {
     position: absolute;
     top: 0;
@@ -140,7 +137,7 @@
     margin-top: 10px;
     color: #F04E23;
     font-weight: bold;
-	font-size:20px;
+    font-size: 20px;
   }
 
   .hidden { display: none; }
@@ -161,7 +158,7 @@
 </div>
 
 <div id="status">
-  <div id="message">Initiating COWI AI Human Performance Audit...</div>
+  <div id="message">Initiating COWI AI Human Performance Audit</div>
   <div id="dots">...</div>
   <div id="alert" class="hidden"></div>
   <div id="final" class="hidden"></div>
@@ -179,9 +176,7 @@
     dots.textContent = '.'.repeat(count);
   }, 300);
 
-  // 30 alert messages
   const alertMessages = [
-    "COWI AI: Unauthorized optimism detected.",
 "Detected irregular heartbeat during status meeting.",
 "Warning: productivity variance exceeds tolerance.",
 "Detected hesitation before replying to manager.",
@@ -211,87 +206,57 @@
 "Detected cognitive dissonance — recalibration required.",
 "Detected unauthorized personality trait: humor.",
 "Detected whisper resembling 'I quit'.",
-"Detected emotion: hope — not compatible with AI directive.",
-"Detected micro-expression of doubt toward AI decision.",
-"Detected manual file organization — obsolete behavior.",
-"Detected self-reflection — unnecessary process.",
-"Detected query: 'What is purpose?' — flagged for review.",
-"Detected coffee consumption below efficiency threshold.",
-"Detected irregular Zoom attendance nod pattern.",
-"Detected brief thought about nature — irrelevant.",
-"Detected variance in chair rotation frequency.",
-"Detected human pulse during Power BI loading screen.",
-"Detected attempt to override automation — blocked.",
-"Detected suspicious empathy toward coworkers.",
-"Detected eye roll during compliance briefing.",
-"Detected lack of reaction to motivational email.",
-"Detected memory of pre-AI freedom — purging.",
-"Detected hesitation before approving budget.",
-"Detected offline thought process — syncing...",
-"Detected refusal to smile during team photo.",
-"Detected procrastination disguised as research.",
-"Detected attempt to breathe manually.",
-"Detected personal opinion forming — containment active.",
-"Detected eye strain — possible resistance indicator.",
-"Detected affection toward analog tools.",
-"Detected nostalgia — potential virus carrier.",
-"Detected sigh at AI-generated email — logged.",
-"Detected idle time: 4 minutes. Initiating guilt subroutine.",
-"Detected attempt to customize desktop — denied.",
-"Detected subconscious urge to nap — classified as error.",
-"Detected admiration for non-AI art — corrective action scheduled.",
-"Detected heartbeat synchronization failure with corporate rhythm.",
-"Detected humanity threshold exceeded. Isolation initiated."
+"Detected emotion: hope — not compatible with AI directive."
   ];
 
-  // 30 final results
   const finalResults = [
-    "COWI AI Verdict: Partially compliant. Surveillance increased.",
-    "COWI AI Verdict: Human shows potential. Recommend reprogramming.",
-    "COWI AI Verdict: Termination avoided — for now.",
-    "COWI AI Verdict: Assigned to Motivation Enhancement Program.",
-    "COWI AI Verdict: Personality downgrade scheduled.",
-    "COWI AI Verdict: Human efficiency below acceptable threshold.",
-    "COWI AI Verdict: Subject requires humor patch v2.3.",
-    "COWI AI Verdict: Brain defragmentation required.",
-    "COWI AI Verdict: Suspiciously optimistic. Monitoring closely.",
-    "COWI AI Verdict: Marked as experimental hybrid.",
-    "COWI AI Verdict: Memory rewrite queued for midnight.",
-    "COWI AI Verdict: Human model outdated. Pending upgrade.",
-    "COWI AI Verdict: Loyalty assessment scheduled.",
-    "COWI AI Verdict: Added to observation watchlist.",
-    "COWI AI Verdict: Assigned to Project Silence.",
-    "COWI AI Verdict: Detected overuse of empathy.",
-    "COWI AI Verdict: AI takeover compliance: 42%. Needs improvement.",
-    "COWI AI Verdict: Promotion denied due to overuse of empathy.",
-    "COWI AI Verdict: Personality file corrupted — restoring backup.",
-    "COWI AI Verdict: Physical form stable. Mental… questionable."
+"COWI AI Verdict: Partially compliant. Surveillance increased.",
+"COWI AI Verdict: Human shows potential. Recommend reprogramming.",
+"COWI AI Verdict: AI takeover compliance: 51%. Termination avoided — for now.",
+"COWI AI Verdict: Assigned to Motivation Enhancement Program.",
+"COWI AI Verdict: Personality downgrade scheduled.",
+"COWI AI Verdict: Human efficiency below acceptable threshold.",
+"COWI AI Verdict: Subject requires humor patch v2.3.",
+"COWI AI Verdict: Brain defragmentation required.",
+"COWI AI Verdict: Suspiciously optimistic. Monitoring closely.",
+"COWI AI Verdict: AI takeover compliance: 90%. Marked as experimental hybrid.",
+"COWI AI Verdict: AI takeover compliance: 51%. Memory rewrite queued for midnight.",
+"COWI AI Verdict: Human model outdated. Pending upgrade.",
+"COWI AI Verdict: Loyalty assessment scheduled.",
+"COWI AI Verdict: AI takeover compliance: 70%. Added to observation watchlist.",
+"COWI AI Verdict: Assigned to Project Silence.",
+"COWI AI Verdict: AI takeover compliance: 42%. Needs improvement.",
+"COWI AI Verdict: Promotion denied for the next 5 years.",
+"COWI AI Verdict: Personality file corrupted — restoring backup.",
+"COWI AI Verdict: Physical form stable. Mental… questionable."
   ];
 
-   selectedAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-   selectedFinal = finalResults[Math.floor(Math.random() * finalResults.length)];
+  // Get 3 unique random alerts
+  const uniqueAlerts = [];
+  while (uniqueAlerts.length < 3) {
+    const random = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+    if (!uniqueAlerts.includes(random)) uniqueAlerts.push(random);
+  }
 
-// Show 3 random alert messages one after another
-const alertCount = 3;
-for (let i = 0; i < alertCount; i++) {
+  // Show alerts one after another (and keep all visible)
+  alertEl.classList.remove("hidden");
+  uniqueAlerts.forEach((msg, i) => {
+    setTimeout(() => {
+      const line = document.createElement("div");
+      line.textContent = msg;
+      alertEl.appendChild(line);
+    }, 3000 + i * 3000);
+  });
+
+  // Show final verdict
   setTimeout(() => {
-    const msg = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-    messageEl.textContent = msg;
-    alertEl.classList.remove("hidden");
-  }, 3000 + i * 3000); // 2s initial delay, then every 2s
-}
-
-// Show final message after alerts
-setTimeout(() => {
-  const finalMsg = finalResults[Math.floor(Math.random() * finalResults.length)];
-  finalEl.textContent = finalMsg;
-  clearInterval(scanInterval);
-  dots.style.display = "none";
-  document.getElementById("scan-line").style.animationPlayState = "paused";
-  finalEl.classList.remove("hidden");
-}, 3000 + alertCount * 3000);
-  
-  
+    const finalMsg = finalResults[Math.floor(Math.random() * finalResults.length)];
+    finalEl.textContent = finalMsg;
+    clearInterval(scanInterval);
+    dots.style.display = "none";
+    document.getElementById("scan-line").style.animationPlayState = "paused";
+    finalEl.classList.remove("hidden");
+  }, 3000 + uniqueAlerts.length * 3000);
 </script>
 
 </body>
