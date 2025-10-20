@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>COWI AI Halloween Audit</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COWI AI Human Audit</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Background Matrix -->
-  <div class="matrix">
-    <!-- duplicated spans to create code rain -->
-    <span style="--i:0">010110101011</span>
-    <span style="--i:1">110010011010</span>
-    <span style="--i:2">101011001101</span>
-    <span style="--i:3">011010110011</span>
-    <span style="--i:4">110110101011</span>
-    <span style="--i:5">011010010101</span>
-    <span style="--i:6">010101101010</span>
-    <span style="--i:7">111001011001</span>
-    <span style="--i:8">101010111001</span>
-    <span style="--i:9">010101101010</span>
+
+<div class="overlay"></div>
+
+<div id="scan-area">
+  <div id="human">
+    <div class="head"></div>
+    <div class="body"></div>
+    <div class="arms"></div>
+    <div class="legs"></div>
   </div>
+  <div id="scan-line"></div>
+</div>
 
-  <!-- Scanner area -->
-  <div id="scanner"></div>
+<div id="status">
+  <div id="message">Initiating COWI AI Human Audit...</div>
+  <div id="dots">...</div>
+  <div id="alert" class="hidden"></div>
+  <div id="final" class="hidden"></div>
+</div>
 
-  <!-- Overlay text -->
-  <div class="hud">
-    <div id="scanText">🔍 Initiating COWI AI Human Audit...</div>
-    <div id="log"></div>
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
