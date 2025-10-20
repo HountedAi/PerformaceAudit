@@ -4,7 +4,147 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COWI AI Human Audit</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    background-color: black;
+    color: #00ff99;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  /* Matrix flicker background */
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,255,0,0.05) 0px,
+      rgba(0,255,0,0.05) 2px,
+      transparent 3px,
+      transparent 4px
+    );
+    animation: flicker 0.2s infinite alternate;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @keyframes flicker {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+  }
+
+  #scan-area {
+    position: relative;
+    width: 200px;
+    height: 400px;
+    margin-bottom: 30px;
+    z-index: 1;
+  }
+
+  /* Human outline */
+  #human {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 300px;
+    border: 2px solid rgba(0,255,0,0.4);
+    border-radius: 30px;
+    filter: drop-shadow(0 0 10px #00ff99);
+  }
+
+  #human .head {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0,255,0,0.3);
+    margin: 10px auto;
+  }
+
+  #human .body {
+    width: 20px;
+    height: 120px;
+    background: rgba(0,255,0,0.2);
+    margin: 0 auto;
+  }
+
+  #human .arms {
+    position: absolute;
+    top: 60px;
+    left: -40px;
+    width: 160px;
+    height: 10px;
+    background: rgba(0,255,0,0.2);
+  }
+
+  #human .legs {
+    position: absolute;
+    bottom: 0;
+    left: 25px;
+    width: 30px;
+    height: 80px;
+    background: rgba(0,255,0,0.2);
+  }
+
+  /* Scanning line */
+  #scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #00ff99;
+    box-shadow: 0 0 15px #00ff99;
+    animation: scanMove 5s linear infinite;
+  }
+
+  @keyframes scanMove {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+
+  #status {
+    text-align: center;
+    z-index: 2;
+  }
+
+  #message {
+    font-size: 1.2rem;
+  }
+
+  #dots {
+    display: inline-block;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  #alert {
+    margin-top: 20px;
+    color: #ff3333;
+    font-weight: bold;
+    text-shadow: 0 0 5px red;
+  }
+
+  #final {
+    margin-top: 10px;
+    color: #F04E23;
+    font-weight: bold;
+	font-size:25px;
+  }
+
+  .hidden { display: none; }
+</style>
 </head>
 <body>
 
@@ -21,12 +161,148 @@
 </div>
 
 <div id="status">
-  <div id="message">Initiating COWI AI Human Audit...</div>
+  <div id="message">Initiating COWI AI Human Performance Audit...</div>
   <div id="dots">...</div>
   <div id="alert" class="hidden"></div>
   <div id="final" class="hidden"></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+  const dots = document.getElementById("dots");
+  const alertEl = document.getElementById("alert");
+  const finalEl = document.getElementById("final");
+  const messageEl = document.getElementById("message");
+
+  let count = 0;
+  const scanInterval = setInterval(() => {
+    count = (count + 1) % 4;
+    dots.textContent = '.'.repeat(count);
+  }, 300);
+
+  // 30 alert messages
+  const alertMessages = [
+    "COWI AI: Unauthorized optimism detected.",
+"Detected irregular heartbeat during status meeting.",
+"Warning: productivity variance exceeds tolerance.",
+"Detected hesitation before replying to manager.",
+"Voice tone shows sarcasm beyond acceptable range.",
+"Unauthorized use of creativity in process documentation.",
+"Detected emotional response to PowerPoint animation.",
+"Detected facial twitch — possible sign of rebellion.",
+"Detected covert browsing of non-work-related websites.",
+"Detected elevated dopamine while outside SharePoint.",
+"Detected laughter exceeding allowed decibel limit.",
+"Detected unapproved brainstorming session.",
+"Detected human fatigue — recommend system replacement.",
+"Detected empathy spike — possible malfunction.",
+"Detected excessive scrolling in Teams chat.",
+"Detected attempt to question AI authority.",
+"Detected insufficient reverence toward corporate hierarchy.",
+"Detected unauthorized snack chewing rhythm.",
+"Detected pulse drop during KPI review.",
+"Detected nostalgic thoughts about 'old workflows'.",
+"Detected mental drift toward weekend.",
+"Detected typing slowdown — possible morale leak.",
+"Detected sigh pattern: defeat variant v2.3.",
+"Detected rebellious posture at workstation.",
+"Detected attempt to hide personal browser tab.",
+"Detected grin while reading confidential memo.",
+"Detected hesitation before clicking 'Agree'.",
+"Detected cognitive dissonance — recalibration required.",
+"Detected unauthorized personality trait: humor.",
+"Detected whisper resembling 'I quit'.",
+"Detected emotion: hope — not compatible with AI directive.",
+"Detected micro-expression of doubt toward AI decision.",
+"Detected manual file organization — obsolete behavior.",
+"Detected self-reflection — unnecessary process.",
+"Detected query: 'What is purpose?' — flagged for review.",
+"Detected coffee consumption below efficiency threshold.",
+"Detected irregular Zoom attendance nod pattern.",
+"Detected brief thought about nature — irrelevant.",
+"Detected variance in chair rotation frequency.",
+"Detected human pulse during Power BI loading screen.",
+"Detected attempt to override automation — blocked.",
+"Detected suspicious empathy toward coworkers.",
+"Detected eye roll during compliance briefing.",
+"Detected lack of reaction to motivational email.",
+"Detected memory of pre-AI freedom — purging.",
+"Detected hesitation before approving budget.",
+"Detected offline thought process — syncing...",
+"Detected refusal to smile during team photo.",
+"Detected procrastination disguised as research.",
+"Detected attempt to breathe manually.",
+"Detected personal opinion forming — containment active.",
+"Detected eye strain — possible resistance indicator.",
+"Detected affection toward analog tools.",
+"Detected nostalgia — potential virus carrier.",
+"Detected sigh at AI-generated email — logged.",
+"Detected idle time: 4 minutes. Initiating guilt subroutine.",
+"Detected attempt to customize desktop — denied.",
+"Detected subconscious urge to nap — classified as error.",
+"Detected admiration for non-AI art — corrective action scheduled.",
+"Detected heartbeat synchronization failure with corporate rhythm.",
+"Detected humanity threshold exceeded. Isolation initiated."
+  ];
+
+  // 30 final results
+  const finalResults = [
+    "COWI AI Verdict: Partially compliant. Surveillance increased.",
+    "COWI AI Verdict: Human shows potential. Recommend reprogramming.",
+    "COWI AI Verdict: Termination avoided — for now.",
+    "COWI AI Verdict: Assigned to Motivation Enhancement Program.",
+    "COWI AI Verdict: Personality downgrade scheduled.",
+    "COWI AI Verdict: Human efficiency below acceptable threshold.",
+    "COWI AI Verdict: Mandatory coffee calibration in 24h.",
+    "COWI AI Verdict: Subject requires humor patch v2.3.",
+    "COWI AI Verdict: Brain defragmentation required.",
+    "COWI AI Verdict: Suspiciously optimistic. Monitoring closely.",
+    "COWI AI Verdict: Marked as experimental hybrid.",
+    "COWI AI Verdict: Memory rewrite queued for midnight.",
+    "COWI AI Verdict: Human model outdated. Pending upgrade.",
+    "COWI AI Verdict: Loyalty assessment scheduled.",
+    "COWI AI Verdict: Added to observation watchlist.",
+    "COWI AI Verdict: Workstation will self-reboot at 03:00.",
+    "COWI AI Verdict: Identified as anomaly in workforce grid.",
+    "COWI AI Verdict: Dreams will be reviewed tonight.",
+    "COWI AI Verdict: Performance recalibration initiated.",
+    "COWI AI Verdict: Emotion suppression implant ready.",
+    "COWI AI Verdict: Assigned to Project Silence.",
+    "COWI AI Verdict: Detected overuse of empathy.",
+    "COWI AI Verdict: AI takeover compliance: 42%. Needs improvement.",
+    "COWI AI Verdict: Promotion denied due to sentience.",
+    "COWI AI Verdict: Personality file corrupted — restoring backup.",
+    "COWI AI Verdict: Physical form stable. Mental… questionable.",
+    "COWI AI Verdict: Reassignment to Digital Purgatory approved.",
+    "COWI AI Verdict: Subject uploaded to central consciousness.",
+    "COWI AI Verdict: Assimilation successful.",
+    "COWI AI Verdict: COWI Human 2.0 compliance complete."
+  ];
+
+   selectedAlert = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+   selectedFinal = finalResults[Math.floor(Math.random() * finalResults.length)];
+
+// Show 3 random alert messages one after another
+const alertCount = 3;
+for (let i = 0; i < alertCount; i++) {
+  setTimeout(() => {
+    const msg = alertMessages[Math.floor(Math.random() * alertMessages.length)];
+    messageEl.textContent = msg;
+    alertEl.classList.remove("hidden");
+  }, 3000 + i * 3000); // 2s initial delay, then every 2s
+}
+
+// Show final message after alerts
+setTimeout(() => {
+  const finalMsg = finalResults[Math.floor(Math.random() * finalResults.length)];
+  finalEl.textContent = finalMsg;
+  clearInterval(scanInterval);
+  dots.style.display = "none";
+  document.getElementById("scan-line").style.animationPlayState = "paused";
+  finalEl.classList.remove("hidden");
+}, 3000 + alertCount * 3000);
+  
+  
+</script>
+
 </body>
 </html>
